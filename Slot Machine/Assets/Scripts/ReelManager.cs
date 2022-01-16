@@ -6,18 +6,19 @@ using UnityEngine.UI;
 public class ReelManager : MonoBehaviour
 {
     public Sprite[] slotIcons;
-    private bool isSpinning = false;
+    public int randIconId;
+    public bool isSpinning = false;
     private int tempImgId;
     public List<Point> allReelIcons = new List<Point>();
+    public List<int> iconsPerReel = new List<int>();
+    public MoneyManager moneyManager;
+    public WinCalculator winCalculator;
 
     // Start is called before the first frame update
     void Start()
     {
-        //allReelIcons.Add(new PointList());
-        //allReelIcons.Add(new List<Point>());
-        //allReelIcons.Add(new PointList());
-        //allReelIcons.Add(new PointList());
-        //allReelIcons.Add(new List<int> { });
+        moneyManager = FindObjectOfType<MoneyManager>();
+        winCalculator = FindObjectOfType<WinCalculator>();
     }
 
     // Update is called once per frame
@@ -30,10 +31,16 @@ public class ReelManager : MonoBehaviour
     {
         if (!isSpinning)
         {
-            ClearList();
-            isSpinning = true;
-            StartCoroutine(StartSpinning());
+            if (moneyManager.IsAbleToSpin())
+            {
+                ClearList();
+                moneyManager.Spinned();
+                isSpinning = true;
+                StartCoroutine(StartSpinning());
+            }
         }
+        else
+            moneyManager.KeepMoney();
     }
 
     public IEnumerator StartSpinning() 
@@ -43,13 +50,14 @@ public class ReelManager : MonoBehaviour
             child.transform.GetChild(3).GetComponent<Image>().gameObject.SetActive(true);
         }
         SuffleIcons();
+        winCalculator.CalculateWinnings(allReelIcons);
 
         foreach (Transform child in transform)
         {
             yield return new WaitForSeconds(2);
             child.transform.GetChild(3).GetComponent<Image>().gameObject.SetActive(false);
         }
-        isSpinning = false;
+        moneyManager.UpdateMoneys();
     }
 
     public void ClearList()
@@ -68,12 +76,39 @@ public class ReelManager : MonoBehaviour
     {
         for (int x = 0; x < transform.childCount; x++)
         {
+            iconsPerReel.Clear();
+            for (int y = 0; y < 19; y++)
+            {
+                iconsPerReel.Add(y);
+            }
             for (int i = 0; i < 3; i++)
             {
-                tempImgId = Random.Range(0, 5);
+                randIconId = Random.Range(1, iconsPerReel.Count) - 1;
+                if (randIconId <= 6)
+                    tempImgId = 0;
+                else if (randIconId >= 7 && randIconId <= 11)
+                    tempImgId = 1;
+                else if (randIconId >= 12 && randIconId <= 14)
+                    tempImgId = 2;
+                else if (randIconId >= 15 && randIconId <= 17)
+                    tempImgId = 3;
+                else if (randIconId >= 18)
+                    tempImgId = 4;
+
                 transform.GetChild(x).transform.GetChild(i).GetComponent<Image>().sprite = slotIcons[tempImgId];
                 allReelIcons[x].list.Add(tempImgId);
+                iconsPerReel.RemoveAt(randIconId);
             }
         }
+    }
+
+    public bool GetIsSpinngin()
+    {
+        return isSpinning;
+    }
+
+    public void StartFreeSpins()
+    {
+
     }
 }
