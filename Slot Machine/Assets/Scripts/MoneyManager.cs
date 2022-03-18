@@ -11,6 +11,7 @@ public class MoneyManager : MonoBehaviour
     public Text errorText;
 
     public GameObject riskButtons;
+    public GameObject riskObjects;
 
     private ReelManager reelManager;
 
@@ -146,7 +147,10 @@ public class MoneyManager : MonoBehaviour
 
     public void RiskMoney()
     {
+        Debug.Log("Riskmoney");
         reelManager.isSpinning = false;
         riskButtons.SetActive(false);
+        riskObjects.transform.GetChild(0).gameObject.SetActive(true);
+        riskObjects.GetComponent<RiskManager>().SetBetting(lastWin);
     }
 }

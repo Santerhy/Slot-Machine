@@ -12,15 +12,25 @@ public class RiskManager : MonoBehaviour
     public float iconPosition;
     public float moveSpeed;
     public float moveSpeedCounter;
+    public float playerMoney;
     public bool isSpinning = false;
-    private RiskReelDestroyChildren destroyChildren;
-    private IconCheck iconCheck;
+    public Text heartMoney;
+    public Text starMoney;
+    public Text spadeMoney;
+    public Text currentMoney;
+    public float heartSum;
+    public float starSum;
+    public float spadeSum;
+    public int playerChoise;
+    public RiskReelDestroyChildren destroyChildren;
+    public IconCheck iconCheck;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        destroyChildren = FindObjectOfType<RiskReelDestroyChildren>();
-        iconCheck = FindObjectOfType<IconCheck>();
+        //destroyChildren = FindObjectOfType<RiskReelDestroyChildren>();
+        //iconCheck = FindObjectOfType<IconCheck>();
         iconPosition = -50f;
         for (int i = 0; i < 60; i++)
         {
@@ -40,6 +50,24 @@ public class RiskManager : MonoBehaviour
             MoveReel();
         else
             isSpinning = false;
+    }
+
+    public void SetBetting(float money)
+    {
+        playerMoney = money;
+        SetBetOptions();
+        //ResetIcons();
+    }
+
+    void SetBetOptions()
+    {
+        heartSum = playerMoney * 2;
+        spadeSum = playerMoney * 2;
+        starSum = playerMoney * 10;
+        heartMoney.text = heartSum + "€";
+        spadeMoney.text = spadeSum + "€";
+        starMoney.text = starSum + "€";
+        currentMoney.text = playerMoney + "€";
     }
 
     public void ResetIcons()
@@ -75,6 +103,7 @@ public class RiskManager : MonoBehaviour
     {
         if (!isSpinning)
         {
+            playerChoise = 2;
             ResetIcons();
             isSpinning = true;
         }
@@ -84,6 +113,7 @@ public class RiskManager : MonoBehaviour
     {
         if (!isSpinning)
         {
+            playerChoise = 1;
             ResetIcons();
             isSpinning = true;
         }
@@ -93,6 +123,7 @@ public class RiskManager : MonoBehaviour
     {
         if (!isSpinning)
         {
+            playerChoise = 0;
             ResetIcons();
             isSpinning = true;
         }
