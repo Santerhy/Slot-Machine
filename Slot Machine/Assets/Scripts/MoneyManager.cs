@@ -82,7 +82,7 @@ public class MoneyManager : MonoBehaviour
         {
             StartCoroutine(winAnimation());
         }
-        else reelManager.isSpinning = false;
+        reelManager.isSpinning = false;
     }
 
     public IEnumerator winAnimation()
@@ -125,6 +125,7 @@ public class MoneyManager : MonoBehaviour
 
     public void AddWinnings(List<float> multipliers, bool scatter)
     {
+        reelManager.winWaiting = true;
         winningsTemp = 0;
         for (int i = 0; i < multipliers.Count; i ++)
         {
@@ -139,7 +140,7 @@ public class MoneyManager : MonoBehaviour
     public void KeepMoney()
     {
         playerMoney += winningsTemp;
-        reelManager.isSpinning = false;
+       // reelManager.isSpinning = false;
         riskButtons.SetActive(false);
         lastWin = 0;
         UpdateMoneys();

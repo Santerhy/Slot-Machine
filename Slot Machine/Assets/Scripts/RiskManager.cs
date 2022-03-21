@@ -8,12 +8,12 @@ public class RiskManager : MonoBehaviour
     public List<GameObject> imageList;
     public GameObject frame;
     public List<GameObject> createdObjects;
-    public GameObject latestIcon;
     public float iconPosition;
     public float moveSpeed;
     public float moveSpeedCounter;
     public float playerMoney;
     public bool isSpinning = false;
+    public bool iconAsked;
     public Text heartMoney;
     public Text starMoney;
     public Text spadeMoney;
@@ -22,6 +22,7 @@ public class RiskManager : MonoBehaviour
     public float starSum;
     public float spadeSum;
     public int playerChoise;
+    public int winIcon;
     public RiskReelDestroyChildren destroyChildren;
     public IconCheck iconCheck;
 
@@ -32,6 +33,7 @@ public class RiskManager : MonoBehaviour
         //destroyChildren = FindObjectOfType<RiskReelDestroyChildren>();
         //iconCheck = FindObjectOfType<IconCheck>();
         iconPosition = -50f;
+        iconAsked = true;
         for (int i = 0; i < 60; i++)
         {
             int rand = Random.Range(0, 3);
@@ -50,6 +52,8 @@ public class RiskManager : MonoBehaviour
             MoveReel();
         else
             isSpinning = false;
+        if (!iconAsked && !isSpinning)
+            GetWinIcon();
     }
 
     public void SetBetting(float money)
@@ -96,14 +100,15 @@ public class RiskManager : MonoBehaviour
 
         frame.transform.localPosition -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
         
-        moveSpeedCounter -= 0.1f;
+        moveSpeedCounter -= 0.2f;
     }
 
-    public void BetStart()
+    public void BetStar()
     {
         if (!isSpinning)
         {
             playerChoise = 2;
+            iconAsked = false;
             ResetIcons();
             isSpinning = true;
         }
@@ -114,6 +119,7 @@ public class RiskManager : MonoBehaviour
         if (!isSpinning)
         {
             playerChoise = 1;
+            iconAsked = false;
             ResetIcons();
             isSpinning = true;
         }
@@ -124,8 +130,34 @@ public class RiskManager : MonoBehaviour
         if (!isSpinning)
         {
             playerChoise = 0;
+            iconAsked = false;
             ResetIcons();
             isSpinning = true;
         }
+    }
+
+    void GetWinIcon()
+    {
+        iconAsked = true;
+        winIcon = iconCheck.GetWinIcon();
+    }
+
+    void CheckWin()
+    {
+        if (winIcon == playerChoise)
+        {
+            if (playerChoise == 1 || playerChoise == 0)
+                playerMoney = heartSum;
+            else
+                playerMoney = starSum;
+            SetBetOptions();
+        }
+        else
+        {
+            playerMoney = 0;
+            currentMoney.text = playerMoney.ToString() + "€";
+            isSpinning = true;
+        }
+            
     }
 }

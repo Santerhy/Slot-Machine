@@ -8,6 +8,7 @@ public class ReelManager : MonoBehaviour
     public Sprite[] slotIcons;
     public int randIconId;
     public bool isSpinning = false;
+    public bool winWaiting = false;
     private int tempImgId;
     public List<Point> allReelIcons = new List<Point>();
     public List<int> iconsPerReel = new List<int>();
@@ -21,26 +22,26 @@ public class ReelManager : MonoBehaviour
         winCalculator = FindObjectOfType<WinCalculator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Spin()
     {
         if (!isSpinning)
         {
-            if (moneyManager.IsAbleToSpin())
+            if (winWaiting)
             {
-                ClearList();
-                moneyManager.Spinned();
-                isSpinning = true;
-                StartCoroutine(StartSpinning());
+                moneyManager.KeepMoney();
+                winWaiting = false;
             }
-        }
-        else
-            moneyManager.KeepMoney();
+            else
+            {
+                if (moneyManager.IsAbleToSpin())
+                {
+                    ClearList();
+                    moneyManager.Spinned();
+                    isSpinning = true;
+                    StartCoroutine(StartSpinning());
+                }
+            }
+        }   
     }
 
     public IEnumerator StartSpinning() 

@@ -333,7 +333,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 989323046}
         m_TargetAssemblyTypeName: RiskManager, Assembly-CSharp
-        m_MethodName: BetStart
+        m_MethodName: BetStar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3384,12 +3384,12 @@ MonoBehaviour:
   - {fileID: 1191159140310368841, guid: c49f1179da7bd3043a592d33407b7556, type: 3}
   frame: {fileID: 5656523}
   createdObjects: []
-  latestIcon: {fileID: 0}
   iconPosition: 0
   moveSpeed: 0
   moveSpeedCounter: 0
   playerMoney: 0
   isSpinning: 0
+  iconAsked: 0
   heartMoney: {fileID: 912063114}
   starMoney: {fileID: 1307785827}
   spadeMoney: {fileID: 1235885348}
@@ -3398,6 +3398,7 @@ MonoBehaviour:
   starSum: 0
   spadeSum: 0
   playerChoise: 0
+  winIcon: 0
   destroyChildren: {fileID: 5656525}
   iconCheck: {fileID: 2091460379}
 --- !u!1 &1084171844
@@ -10460,6 +10461,7 @@ MonoBehaviour:
   - {fileID: 4068757090523509063, guid: 468edbe11d807014ba65d6b04e87fe9d, type: 3}
   randIconId: 0
   isSpinning: 0
+  winWaiting: 0
   allReelIcons:
   - list: 000000000000000000000000
   - list: 000000000000000000000000
@@ -10864,8 +10866,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.033316, y: -0.26513}
-  m_SizeDelta: {x: 23.046, y: 2.84241}
+  m_AnchoredPosition: {x: -0.78001, y: -0.077032}
+  m_SizeDelta: {x: 21.41935, y: 0.15407}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2091460379
 MonoBehaviour:
